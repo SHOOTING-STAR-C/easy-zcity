@@ -365,12 +365,18 @@ function ezc.CalcView(ply, origin, angles, fov, znear, zfar)
 	view.znear = 1
 	view.fov = math.Clamp(ezc.fov:GetFloat(), 75, 100) + lerpfovadd + lerpfovadd2
 	view.drawviewer = true
-	view.origin = eyePos  -- Use neck bone, not ply:EyePos()
+
+	-- Neck bone position for ezcity world-model weapons, standard position for others
+	local wep = ply:GetActiveWeapon()
+	if IsValid(wep) and wep.IsEZCWeapon then
+		view.origin = eyePos
+	else
+		view.origin = origin
+	end
 	view.angles = angles
 
 	-- Camera hook (weapon iron sights)
 	-- Source: cl_camera.lua:547-548
-	local wep = ply:GetActiveWeapon()
 	local camResult
 	if IsValid(wep) and wep.IsEZCWeapon and wep.Camera then
 		local result = wep:Camera(eyePos, angles, view, ply:GetVelocity():Length() * 200)
@@ -511,11 +517,12 @@ end, "HIGHEST")
 
 -- ============================================
 -- Head bone scaling (hide head in first person, show in third person)
+-- Only applies when our camera is active (third person)
 -- Source: cl_camera.lua:463, fake/sh_render.lua
 -- ============================================
 hook.Add("PrePlayerDraw", "ezc_hide_head", function(ply)
 	if CLIENT and ply == LocalPlayer() and GetViewEntity() == ply then
-		local hide = not ezc.thirdperson:GetBool()
+		local hide = ezc.thirdperson:GetBool() and false or false
 		ezc.HideHead(ply, hide)
 	end
 end)
@@ -523,7 +530,9 @@ end)
 -- ============================================
 -- Register CalcView
 -- Source: cl_camera.lua:765-769
+-- Only applies in third person; first person uses engine default or other addons
 -- ============================================
 hook.Add("CalcView", "ezc_view", function(ply, origin, angles, fov, znear, zfar)
+	if not ezc.thirdperson:GetBool() then return end
 	return ezc.CalcView(ply, origin, angles, fov, znear, zfar)
 end)
