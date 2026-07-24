@@ -89,6 +89,9 @@ lua/
     └── sh_wepshared.lua       # SWEP 共享方法
 ```
 
+## 待移植功能
+- 1.站姿等姿势
+
 ## 来源
 
 移植自 [Z-City](https://github.com/SHOOTING-STAR-C/Z-City)（`homigrad` 核心库 + `weapons/homigrad_base`）。
