@@ -213,7 +213,16 @@ hook.Add("Think", "ezc_posture_think", function()
 	local ply = LocalPlayer()
 	if not IsValid(ply) or not ply:Alive() then return end
 	local wep = ply:GetActiveWeapon()
-	if IsValid(wep) and ezc.IsEZCWeapon(wep) then
+	if not IsValid(wep) then return end
+
+	-- Auto-reset pistol-only postures for non-pistol weapons
+	if ply.posture and (ply.posture == 7 or ply.posture == 8) then
+		if not (wep.IsPistolHoldType and wep:IsPistolHoldType()) then
+			ply.posture = 0
+		end
+	end
+
+	if ezc.IsEZCWeapon(wep) then
 		-- Reset then apply
 		wep.AdditionalPos = Vector(0, 0, 0)
 		wep.AdditionalAng = Angle(0, 0, 0)

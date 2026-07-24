@@ -23,8 +23,10 @@ SWEP.ZoomPos = Vector()  -- Camera position when aiming
 -- ============================================
 -- IsZoom - Check if weapon is aiming down sights
 -- Source: shared.lua:294-308
+-- Only applies to ezcity weapons
 -- ============================================
 function SWEP:IsZoom()
+	if not self.IsEZCWeapon then return false end
 	local owner = self:GetOwner()
 	if not IsValid(owner) or not owner:IsPlayer() then return false end
 
@@ -39,6 +41,7 @@ end
 -- Source: shared.lua:310-316
 -- ============================================
 function SWEP:CanUse()
+	if not self.IsEZCWeapon then return true end
 	local owner = self:GetOwner()
 	if not IsValid(owner) then return true end
 	if owner:IsNPC() then return true end
@@ -69,8 +72,9 @@ end
 
 -- ============================================
 -- IsPistolHoldType - Check hold type
--- Source: various weapon files
+-- Only applies to ezcity weapons
 -- ============================================
 function SWEP:IsPistolHoldType()
+	if not self.IsEZCWeapon then return false end
 	return self.HoldType == "pistol" or self.HoldType == "revolver" or self.PistolKinda
 end

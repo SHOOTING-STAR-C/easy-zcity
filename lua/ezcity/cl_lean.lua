@@ -64,6 +64,10 @@ concommand.Add("-ezc_lean_right", function() cmdLeanRight = false cmdLeanLeft = 
 hook.Add("Bones", "ezc_lean_bone", function(ply, dtime)
 	if not IsValid(ply) or not ply:Alive() then return end
 
+	-- Only apply lean bone manipulation for ezcity weapons (others handle their own bones)
+	local wep = ply:GetActiveWeapon()
+	if IsValid(wep) and not wep.IsEZCWeapon then return end
+
 	-- Read lean input (keyboard OR console commands)
 	-- Z-City source: IN_ALT2 = left, IN_ALT1 = right
 	local left = (ply:KeyDown(IN_ALT2) or cmdLeanLeft) and not (ply:KeyDown(IN_ALT1) or cmdLeanRight)

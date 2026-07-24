@@ -139,3 +139,15 @@ hook.Add("PlayerSpawn", "ezc_viewpunch_reset", function(ply)
 		vp_punch_angle_last4:Zero()
 	end
 end)
+
+-- Global wrappers for backward compatibility (for other addons)
+Viewpunch = ezc.ViewPunch  -- lowercase variant for viewbob addon compat
+ViewPunch = ezc.ViewPunch
+ViewPunch2 = ezc.ViewPunch2
+ViewPunch3 = ezc.ViewPunch3
+ViewPunch4 = ezc.ViewPunch4
+GetViewPunchAngles = ezc.GetViewPunchAngles
+GetViewPunchAngles2 = ezc.GetViewPunchAngles2
+GetViewPunchAngles3 = ezc.GetViewPunchAngles3
+GetViewPunchAngles4 = ezc.GetViewPunchAngles4
+GetAllViewPunchAngles = ezc.GetAllViewPunchAngles
